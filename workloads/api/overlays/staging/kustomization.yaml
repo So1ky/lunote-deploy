@@ -7,7 +7,7 @@ resources:
 images:
   - name: lunote-api
     newName: 695019457880.dkr.ecr.ap-northeast-2.amazonaws.com/lunote/api
-    newTag: 322f9422c7a7 # 자리표시 — 실제 배포 태그는 배포 저장소(So1ky/lunote-deploy)의 이 줄이다(CI가 갱신)
+    newTag: 68b13d86ecc9 # 자리표시 — 실제 배포 태그는 배포 저장소(So1ky/lunote-deploy)의 이 줄이다(CI가 갱신)
 configMapGenerator:
   - name: api-config
     options:
@@ -23,6 +23,14 @@ configMapGenerator:
       - CORS_ORIGINS=https://admin-staging.lunoteapp.com
       - SMTP_HOST=smtp-relay.brevo.com
       - SMTP_PORT=587
+      # OpenTelemetry(Plan 8). 트레이스는 Tempo 도입 전까지 none — 받을 곳 없이 켜면 연결 실패가 쌓인다
+      - OTEL_SERVICE_NAME=lunote-api
+      - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=staging
+      - OTEL_TRACES_EXPORTER=none
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://alloy.monitoring.svc:4317
+      - OTEL_TRACES_SAMPLER=parentbased_traceidratio
+      - OTEL_TRACES_SAMPLER_ARG=0.2
       - REDIS_URL=redis://redis:6379 # staging 전용 클러스터 내 Redis(platform/namespaces/staging-redis.yaml) — 비밀이 아니다
 patches:
   - target:
