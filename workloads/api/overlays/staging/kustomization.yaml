@@ -7,7 +7,7 @@ resources:
 images:
   - name: lunote-api
     newName: 695019457880.dkr.ecr.ap-northeast-2.amazonaws.com/lunote/api
-    newTag: 72aca2f57287 # 자리표시 — 실제 배포 태그는 배포 저장소(So1ky/lunote-deploy)의 이 줄이다(CI가 갱신)
+    newTag: 02b9dd0f2771 # 자리표시 — 실제 배포 태그는 배포 저장소(So1ky/lunote-deploy)의 이 줄이다(CI가 갱신)
 configMapGenerator:
   - name: api-config
     options:
